@@ -1,0 +1,72 @@
+-- ============================================
+-- ProductAuth Database Setup Script
+-- ============================================
+-- Run these commands in phpMyAdmin or MySQL command line
+-- to set up the complete authentication system database
+
+-- Create the database
+CREATE DATABASE IF NOT EXISTS product_auth_system;
+USE product_auth_system;
+
+-- Create users table
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'user') DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Insert sample admin user
+-- Email: admin@example.com
+-- Password: admin123
+INSERT INTO users (name, email, password, role) VALUES 
+('Admin User', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+
+-- Insert sample regular user
+-- Email: user@example.com  
+-- Password: user123
+INSERT INTO users (name, email, password, role) VALUES 
+('John Doe', 'user@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user');
+
+-- Insert additional sample users for testing
+INSERT INTO users (name, email, password, role) VALUES 
+('Jane Smith', 'jane@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user'),
+('Mike Johnson', 'mike@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user'),
+('Sarah Wilson', 'sarah@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+
+-- Verify the setup
+SELECT 'Database setup completed successfully!' as status;
+SELECT COUNT(*) as total_users FROM users;
+SELECT role, COUNT(*) as count FROM users GROUP BY role;
+
+-- ============================================
+-- Password Information for Testing:
+-- ============================================
+-- All sample accounts use the same password for testing: admin123 or user123
+-- In production, each user should have unique, strong passwords
+--
+-- Sample Login Credentials:
+-- Admin Users:
+--   - admin@example.com / admin123
+--   - sarah@example.com / admin123
+-- 
+-- Regular Users:
+--   - user@example.com / user123  
+--   - jane@example.com / user123
+--   - mike@example.com / user123
+--
+-- ============================================
+-- Database Configuration Notes:
+-- ============================================
+-- 1. Make sure to update db_connect.php with correct database credentials
+-- 2. Default configuration assumes:
+--    - Host: localhost
+--    - Database: product_auth_system
+--    - Username: root
+--    - Password: (empty for XAMPP default)
+-- 3. For production, create a dedicated database user with limited privileges
+-- 4. Enable SSL connections for production environments
+-- ============================================
